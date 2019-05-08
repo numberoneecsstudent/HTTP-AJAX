@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import{ Link } from 'react-router-dom';
 
 class FriendInput extends React.Component {
     constructor(props){
@@ -10,46 +10,41 @@ class FriendInput extends React.Component {
             age: '',
             email: '',
         };
-    }
-
-    onInputChange = (event, type) => {
+    } 
+    onInputChange = (e, type) => {
         this.setState({
-            [type]: event.target.value,
+            [type]: e.target.value,
         });
     }
-
-    onAddFriend = (event) => {
-        event.preventDefault();
-        if (!this.state.name || this.state.age || this.state.email) return alert('Please fill out all fields');
-        const [name, age, email] = [this.state.name, this.state.age, this.state.email];
+    onAddFriend = (e) => {
+        e.preventDefault();
+        if (!this.state.name || !this.state.age || !this.state.email) return alert('Please fill out all fields');
+        const [name, age, email] = [this.state.name, Number(this.state.age), this.state.email];
         this.setState({name: '', age: '', email: ''});
         axios.post('http://localhost:5000/friends', {
-            name, 
+            name,
             age,
             email,
         })
-        .then(res => {
-            this.props.updateList(res.data);
-            this.props.history.push('/')
-        })
-        .catch(err => { throw new Error(err) });
+            .then(res => {
+                this.props.updateList(res.data);
+                this.props.history.push('/');
+            })
+            .catch(err => { throw new Error(err) });
     }
-
     render(){
         return (
-            <div className ="input-container">
-            <form onSubmit={this.onAddFriend} className='friend-input'>
-            <Link to="/" className="return-home">Home</Link>
-            <p>Enter new friend's information: </p>
-            <input type="text" placeholder="Name" value={this.state.name} onChange={(event) => this.onInputChange(event, 'name')} />
-            <input type="text" placeholder="Name" value={this.state.age} onChange={(event) => this.onInputChange(event, 'age')} />
-            <input type="text" placeholder="Name" value={this.state.email} onChange={(event) => this.onInputChange(event, 'email')} />
-            <button type="submit">Add friend</button>
-            </form>
+            <div className="input-container">
+                <form onSubmit={this.onAddFriend} className="friend-input">
+                    <Link to="/" className="return-home">Home</Link>
+                    <p>Enter new friend's information:</p>
+                    <input type="text" placeholder="Name" value={this.state.name} onChange={(e) => this.onInputChange(e, 'name')} />
+                    <input type="number" placeholder="Age" value={this.state.age} onChange={(e) => this.onInputChange(e, 'age')} />
+                    <input type="email" placeholder="Email" value={this.state.email} onChange={(e) => this.onInputChange(e, 'email')} />
+                    <button type="submit">Add Friend</button>
+                </form>
             </div>
-        )
-    }
-
+        );
+    } 
 }
-
-export default FriendInput;
+export default FriendInput; 
