@@ -12,6 +12,8 @@ const FriendsList = props => (
                     email={friend.email}
                     id={friend.id}
                     key={friend.id}
+                    deleteFriend={props.deleteFriend}
+                    handleUpdate={props.editFriend}
                 />
             ))}
         </div>
